@@ -1,0 +1,25 @@
+public function get_price() {
+
+  $params = CI::$APP->input->get();
+  $key    = (empty($params['id'])) ? 'num':'id';
+
+	if(empty($params[$key])) exit(-1);
+
+	$func_name = 'get_price_'.$key;
+  $param_val = $params[$key];
+
+  if (!method_exists($this, $func_name)) exit(-1);
+
+ 	$res = array();
+
+  if(!is_array($param_val)) {
+     $param_val = array($param_val);
+  }
+
+  foreach($param_val as $id=>$val) {
+     $res[$val] = $this->$func_name($val);
+  }
+
+	return json_encode($res, JSON_FORCE_OBJECT);
+
+}
